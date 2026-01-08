@@ -3,8 +3,11 @@ fn main() {
 
     #[cfg(windows)]
     {
-        embed_manifest::embed_manifest(embed_manifest::new_manifest("Symlink Manager")
-            .requested_execution_level(embed_manifest::ExecutionLevel::RequireAdministrator))
+        use embed_manifest::{embed_manifest, new_manifest};
+        use embed_manifest::manifest::ExecutionLevel;
+
+        embed_manifest(new_manifest("Symlink Manager")
+            .requested_execution_level(ExecutionLevel::RequireAdministrator))
             .expect("Failed to embed manifest");
     }
 }
