@@ -50,7 +50,9 @@ Built applications are output to `src-tauri/target/release/bundle/`.
 
 ## Windows Notes
 
-Creating symbolic links on Windows requires administrator privileges. The app will prompt for elevation (UAC) on launch.
+Creating symbolic links on Windows requires either:
+- **Developer Mode enabled** (Settings → System → For developers) - recommended
+- Running the application as Administrator
 
 ## Concepts
 
