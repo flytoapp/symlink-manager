@@ -1,9 +1,10 @@
 fn main() {
-    #[cfg(target_os = "windows")]
+    tauri_build::build();
+
+    #[cfg(windows)]
     {
-        let mut res = winresource::WindowsResource::new();
-        res.set_manifest_file("windows-manifest.xml");
-        res.compile().unwrap();
+        embed_manifest::embed_manifest(embed_manifest::new_manifest("Symlink Manager")
+            .requested_execution_level(embed_manifest::ExecutionLevel::RequireAdministrator))
+            .expect("Failed to embed manifest");
     }
-    tauri_build::build()
 }

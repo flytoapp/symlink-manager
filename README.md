@@ -19,13 +19,21 @@ A cross-platform desktop application for managing symbolic links across multiple
 
 ## Installation
 
+Download the latest release for your platform from the [Releases](https://github.com/flytoapp/symlink-manager/releases) page:
+
+- **Windows**: `.msi` or `.exe`
+- **macOS**: `.dmg`
+- **Linux**: `.deb` or `.AppImage`
+
+## Development
+
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) (v18+)
 - [Rust](https://rustup.rs/)
-- Platform-specific dependencies for Tauri: [see Tauri prerequisites](https://tauri.app/start/prerequisites/)
+- Platform-specific dependencies: [Tauri prerequisites](https://tauri.app/start/prerequisites/)
 
-### Development
+### Setup
 
 ```bash
 # Install dependencies
@@ -33,11 +41,7 @@ npm install
 
 # Run in development mode
 npm run tauri dev
-```
 
-### Building
-
-```bash
 # Build for production
 npm run tauri build
 ```
