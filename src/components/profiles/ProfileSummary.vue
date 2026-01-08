@@ -33,7 +33,7 @@ async function loadAllItems() {
       });
 
       for (const item of items) {
-        if (item.enabled) {
+        if (item.status === 'active') {
           results.push({ ...item, source });
         }
       }
@@ -77,7 +77,7 @@ watch(() => props.profile.id, loadAllItems, { immediate: true });
     <div class="mb-4">
       <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">{{ profile.name }}</h2>
       <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
-        {{ allItems.length }} enabled item{{ allItems.length === 1 ? '' : 's' }} across {{ profile.sources.length }} source{{ profile.sources.length === 1 ? '' : 's' }}
+        {{ allItems.length }} active item{{ allItems.length === 1 ? '' : 's' }} across {{ profile.sources.length }} source{{ profile.sources.length === 1 ? '' : 's' }}
       </p>
     </div>
 
@@ -91,7 +91,7 @@ watch(() => props.profile.id, loadAllItems, { immediate: true });
     </div>
 
     <div v-else-if="allItems.length === 0" class="flex-1 flex flex-col items-center justify-center text-gray-500 dark:text-gray-400">
-      <p>No enabled items in this profile.</p>
+      <p>No active symlinks in this profile.</p>
       <p class="text-sm mt-2">Select a source from the sidebar to enable items.</p>
     </div>
 

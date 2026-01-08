@@ -46,7 +46,8 @@ onUnmounted(() => {
 
 function handleClick() {
   if (!props.disabled && !props.isToggling && props.item.status !== 'conflict') {
-    emit('toggle', props.item.name, !props.item.enabled);
+    // Toggle based on current status: if active, disable; otherwise enable
+    emit('toggle', props.item.name, props.item.status !== 'active');
   }
 }
 
@@ -82,11 +83,11 @@ async function openInFinder() {
     class="flex items-center gap-2 px-2.5 py-1.5 rounded transition-colors cursor-pointer select-none"
     :class="{
       'opacity-50 cursor-not-allowed': disabled || item.status === 'conflict',
-      'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-900/60': item.enabled && item.status !== 'conflict',
-      'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700': !item.enabled && item.status !== 'conflict',
+      'bg-emerald-100 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-900/60': item.status === 'active',
+      'bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700': item.status === 'inactive' || item.status === 'broken',
       'bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 cursor-not-allowed': item.status === 'conflict',
     }"
-    :title="item.status === 'conflict' ? `Conflict: ${item.conflictSource}` : (item.enabled ? 'Click to disable' : 'Click to enable')"
+    :title="item.status === 'conflict' ? `Conflict: ${item.conflictSource}` : (item.status === 'active' ? 'Click to disable' : 'Click to enable')"
     @click="handleClick"
     @contextmenu="handleContextMenu"
   >
@@ -102,7 +103,7 @@ async function openInFinder() {
       {{ item.name }}
     </span>
 
-    <Check v-if="item.enabled && !isToggling" :size="16" class="flex-shrink-0 text-emerald-500 dark:text-emerald-400" />
+    <Check v-if="item.status === 'active' && !isToggling" :size="16" class="flex-shrink-0 text-emerald-500 dark:text-emerald-400" />
   </div>
 
   <!-- Context Menu -->

@@ -92,32 +92,31 @@ function selectSource(sourceId: string) {
 
       <div v-else class="flex-1 flex flex-col p-4 overflow-hidden">
         <div class="mb-4">
-          <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ activeSource.name }}</h2>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 flex items-center gap-1">
-            Source:
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{{ activeSource.name }}</h2>
+          <div class="grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
+            <span class="text-gray-500 dark:text-gray-400">Source:</span>
             <button
-              class="inline-flex items-center gap-1 px-1 py-0.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded font-mono transition-colors cursor-pointer"
+              class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded font-mono transition-colors cursor-pointer truncate text-gray-700 dark:text-gray-300"
               title="Open in file manager"
               @click="openInFinder(activeSource.sourcePath)"
             >
-              {{ activeSource.sourcePath }}
-              <ExternalLink :size="10" class="opacity-50" />
+              <span class="truncate">{{ activeSource.sourcePath }}</span>
+              <ExternalLink :size="10" class="flex-shrink-0 opacity-50" />
             </button>
-          </p>
-          <p class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
-            Target:
+            <span class="text-gray-500 dark:text-gray-400">Target:</span>
             <button
-              class="inline-flex items-center gap-1 px-1 py-0.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded font-mono transition-colors cursor-pointer"
+              class="inline-flex items-center gap-1 px-1.5 py-0.5 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded font-mono transition-colors cursor-pointer truncate text-gray-700 dark:text-gray-300"
               title="Open in file manager"
               @click="openInFinder(activeSource.targetPath || activeProfile.basePath)"
             >
-              {{ activeSource.targetPath || activeProfile.basePath }}
-              <ExternalLink :size="10" class="opacity-50" />
+              <span class="truncate">{{ activeSource.targetPath || activeProfile.basePath }}</span>
+              <ExternalLink :size="10" class="flex-shrink-0 opacity-50" />
             </button>
-          </p>
+          </div>
         </div>
 
         <ItemList
+          class="flex-1 min-h-0"
           :profile-id="activeProfile.id"
           :source-id="activeSource.id"
           :can-create-symlinks="store.canCreateSymlinks"

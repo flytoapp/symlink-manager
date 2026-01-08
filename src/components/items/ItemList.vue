@@ -16,7 +16,7 @@ const sourceIdRef = computed(() => props.sourceId);
 const { items, isLoading, isToggling, error, toggleItem, loadItems } = useItems(profileIdRef, sourceIdRef);
 
 const lastError = ref<string | null>(null);
-const filter = ref<'all' | 'enabled' | 'disabled'>('all');
+const filter = ref<'all' | 'active' | 'inactive'>('all');
 const searchQuery = ref('');
 
 function fuzzyMatch(text: string, query: string): boolean {
@@ -37,8 +37,8 @@ const filteredItems = computed(() => {
   let result = items.value;
 
   // Apply status filter
-  if (filter.value === 'enabled') result = result.filter(i => i.enabled);
-  else if (filter.value === 'disabled') result = result.filter(i => !i.enabled);
+  if (filter.value === 'active') result = result.filter(i => i.status === 'active');
+  else if (filter.value === 'inactive') result = result.filter(i => i.status !== 'active' && i.status !== 'conflict');
 
   // Apply fuzzy search filter
   if (searchQuery.value.trim()) {
@@ -50,8 +50,8 @@ const filteredItems = computed(() => {
 
 const counts = computed(() => ({
   all: items.value.length,
-  enabled: items.value.filter(i => i.enabled).length,
-  disabled: items.value.filter(i => !i.enabled).length,
+  active: items.value.filter(i => i.status === 'active').length,
+  inactive: items.value.filter(i => i.status !== 'active' && i.status !== 'conflict').length,
 }));
 
 async function handleToggle(itemName: string, enabled: boolean) {
@@ -65,13 +65,13 @@ async function handleToggle(itemName: string, enabled: boolean) {
 const isDisablingAll = ref(false);
 
 async function disableAll() {
-  const enabledItems = items.value.filter(i => i.enabled && i.status !== 'conflict');
-  if (enabledItems.length === 0) return;
+  const activeItems = items.value.filter(i => i.status === 'active');
+  if (activeItems.length === 0) return;
 
   isDisablingAll.value = true;
   lastError.value = null;
 
-  for (const item of enabledItems) {
+  for (const item of activeItems) {
     const result = await toggleItem(item.name, false);
     if (!result.success && result.error) {
       lastError.value = result.error;
@@ -84,12 +84,12 @@ async function disableAll() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-3 h-full">
+  <div class="flex flex-col gap-3">
     <div class="flex justify-between items-center">
       <h3 class="text-sm font-semibold text-gray-700 dark:text-gray-200">Items</h3>
       <div class="flex gap-2">
         <button
-          v-if="counts.enabled > 0"
+          v-if="counts.active > 0"
           class="flex items-center gap-1.5 px-2 py-1 text-xs bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 rounded hover:bg-red-100 dark:hover:bg-red-900/50 disabled:opacity-50"
           :disabled="isLoading || isDisablingAll"
           @click="disableAll"
@@ -110,7 +110,7 @@ async function disableAll() {
 
     <div class="flex gap-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
       <button
-        v-for="f in (['all', 'enabled', 'disabled'] as const)"
+        v-for="f in (['all', 'active', 'inactive'] as const)"
         :key="f"
         class="flex-1 px-3 py-1.5 text-xs font-medium rounded-md transition-colors"
         :class="filter === f
@@ -118,7 +118,7 @@ async function disableAll() {
           : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'"
         @click="filter = f"
       >
-        {{ f === 'all' ? 'All' : f === 'enabled' ? 'Enabled' : 'Disabled' }}
+        {{ f === 'all' ? 'All' : f === 'active' ? 'Active' : 'Inactive' }}
         <span class="ml-1 text-gray-400 dark:text-gray-500">({{ counts[f] }})</span>
       </button>
     </div>
@@ -168,10 +168,10 @@ async function disableAll() {
 
     <div v-else-if="filteredItems.length === 0" class="flex-1 flex items-center justify-center text-gray-500 dark:text-gray-400">
       <span v-if="searchQuery">No items matching "{{ searchQuery }}"</span>
-      <span v-else>No {{ filter === 'enabled' ? 'enabled' : 'disabled' }} items.</span>
+      <span v-else>No {{ filter === 'active' ? 'active' : 'inactive' }} items.</span>
     </div>
 
-    <div v-else class="flex-1 overflow-y-auto flex flex-col gap-1 pr-1">
+    <div v-else class="flex-1 min-h-0 overflow-y-auto flex flex-col gap-1 pr-1">
       <ItemRow
         v-for="item in filteredItems"
         :key="item.name"
@@ -183,8 +183,8 @@ async function disableAll() {
     </div>
 
     <div class="flex gap-4 pt-2 border-t border-gray-200 dark:border-gray-700 text-[11px] text-gray-500 dark:text-gray-400">
-      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-200 dark:bg-emerald-700"></span> Enabled</span>
-      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-gray-200 dark:bg-gray-600"></span> Disabled</span>
+      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-200 dark:bg-emerald-700"></span> Active</span>
+      <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-gray-200 dark:bg-gray-600"></span> Inactive</span>
       <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-red-200 dark:bg-red-700"></span> Conflict</span>
     </div>
   </div>
