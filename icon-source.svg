@@ -1,0 +1,21 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10B981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background square -->
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+
+  <!-- Simple chain link icon -->
+  <g fill="none" stroke="white" stroke-width="56" stroke-linecap="round">
+    <!-- Top-left link -->
+    <path d="M 400 400 L 300 300 A 120 120 0 1 1 420 180 L 520 280"/>
+    <!-- Bottom-right link -->
+    <path d="M 624 624 L 724 724 A 120 120 0 1 1 604 844 L 504 744"/>
+    <!-- Center connection -->
+    <line x1="470" y1="470" x2="554" y2="554"/>
+  </g>
+</svg>

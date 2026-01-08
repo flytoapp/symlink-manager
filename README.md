@@ -1,0 +1,65 @@
+# Symlink Manager
+
+A cross-platform desktop application for managing symbolic links across multiple directories. Built with Tauri, Vue 3, and Rust.
+
+## Features
+
+- **Profile-based organization** - Group related symlink configurations into profiles
+- **Multiple sources per profile** - Manage symlinks from different source directories to a common target
+- **Visual status indicators** - See at a glance which items are active, inactive, broken, or have conflicts
+- **Dark mode support** - Automatic theme detection with manual override
+- **Cross-platform** - Works on macOS, Windows, and Linux
+
+## Use Cases
+
+- Managing dotfiles across multiple machines
+- Selectively enabling game mods or plugins
+- Organizing shared configuration files
+- Any workflow requiring toggling symlinks on/off
+
+## Installation
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (v18+)
+- [Rust](https://rustup.rs/)
+- Platform-specific dependencies for Tauri: [see Tauri prerequisites](https://tauri.app/start/prerequisites/)
+
+### Development
+
+```bash
+# Install dependencies
+npm install
+
+# Run in development mode
+npm run tauri dev
+```
+
+### Building
+
+```bash
+# Build for production
+npm run tauri build
+```
+
+Built applications are output to `src-tauri/target/release/bundle/`.
+
+## Windows Notes
+
+Creating symbolic links on Windows requires administrator privileges. The app will prompt for elevation (UAC) on launch.
+
+## Concepts
+
+- **Profile**: A named configuration with a default target path (e.g., `~/.config`) and one or more sources
+- **Source**: A directory containing items you want to symlink (e.g., your dotfiles repo's `config/` folder)
+- **Item**: An individual file or folder within a source that can be enabled (symlinked) or disabled
+
+## Tech Stack
+
+- **Frontend**: Vue 3, TypeScript, Pinia, Tailwind CSS v4
+- **Backend**: Rust, Tauri v2
+- **Icons**: Lucide Vue
+
+## License
+
+MIT
