@@ -4,6 +4,8 @@ A cross-platform desktop application for managing symbolic links across multiple
 
 **[User Manual](docs/MANUAL.md)** · **[Download](https://github.com/flytoapp/symlink-manager/releases)**
 
+![Symlink Manager](public/profile.png)
+
 ## Features
 
 - **Profile-based organization** - Group related symlink configurations into profiles
