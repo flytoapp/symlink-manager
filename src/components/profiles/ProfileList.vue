@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Trash2 } from 'lucide-vue-next';
+import { Trash2, Pencil } from 'lucide-vue-next';
 import type { Profile } from '@/types';
 import ProfileForm from './ProfileForm.vue';
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue';
@@ -15,15 +15,26 @@ const emit = defineEmits<{
   select: [profileId: string];
 }>();
 
-const { createProfile, deleteProfile, isCreating } = useProfiles();
+const { createProfile, updateProfile, deleteProfile, isCreating, isUpdating } = useProfiles();
 
 const showCreateForm = ref(false);
+const profileToEdit = ref<Profile | null>(null);
 const profileToDelete = ref<Profile | null>(null);
 
 async function handleCreate(name: string, basePath: string) {
   const profile = await createProfile(name, basePath);
   showCreateForm.value = false;
   emit('select', profile.id);
+}
+
+async function handleEdit(name: string, basePath: string) {
+  if (!profileToEdit.value) return;
+  await updateProfile({
+    ...profileToEdit.value,
+    name,
+    basePath,
+  });
+  profileToEdit.value = null;
 }
 
 async function handleDelete() {
@@ -64,13 +75,22 @@ async function handleDelete() {
           <span class="text-sm font-medium text-gray-900 dark:text-gray-100">{{ profile.name }}</span>
           <span class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ profile.basePath }}</span>
         </div>
-        <button
-          class="p-1.5 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
-          title="Delete profile"
-          @click.stop="profileToDelete = profile"
-        >
-          <Trash2 :size="16" />
-        </button>
+        <div class="flex gap-0.5">
+          <button
+            class="p-1.5 text-gray-400 dark:text-gray-500 hover:text-blue-500 dark:hover:text-blue-400 rounded hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
+            title="Edit profile"
+            @click.stop="profileToEdit = profile"
+          >
+            <Pencil :size="16" />
+          </button>
+          <button
+            class="p-1.5 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
+            title="Delete profile"
+            @click.stop="profileToDelete = profile"
+          >
+            <Trash2 :size="16" />
+          </button>
+        </div>
       </div>
     </div>
 
@@ -79,6 +99,14 @@ async function handleDelete() {
       :is-loading="isCreating"
       @submit="handleCreate"
       @cancel="showCreateForm = false"
+    />
+
+    <ProfileForm
+      v-if="profileToEdit"
+      :profile="profileToEdit"
+      :is-loading="isUpdating"
+      @submit="handleEdit"
+      @cancel="profileToEdit = null"
     />
 
     <ConfirmDialog

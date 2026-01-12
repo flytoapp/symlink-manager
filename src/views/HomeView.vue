@@ -83,7 +83,7 @@ function selectSource(sourceId: string) {
     <main class="flex-1 flex flex-col overflow-hidden">
       <div v-if="!activeProfile" class="flex-1 flex flex-col items-center justify-center p-8 text-center text-gray-500 dark:text-gray-400">
         <h2 class="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-2">Welcome to Symlink Manager</h2>
-        <p>Create a profile to get started managing your symlinks.</p>
+        <p>Create a profile to get started.</p>
       </div>
 
       <div v-else-if="!activeSource" class="flex-1 flex flex-col p-4 overflow-hidden">

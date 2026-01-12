@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import PathInput from '@/components/common/PathInput.vue';
+import type { Source } from '@/types';
 
 const props = defineProps<{
   isLoading?: boolean;
   defaultTarget: string;
+  source?: Source;
 }>();
 
 const emit = defineEmits<{
@@ -12,10 +14,12 @@ const emit = defineEmits<{
   cancel: [];
 }>();
 
-const name = ref('');
-const sourcePath = ref('');
-const useCustomTarget = ref(false);
-const customTargetPath = ref('');
+const isEditMode = computed(() => !!props.source);
+
+const name = ref(props.source?.name ?? '');
+const sourcePath = ref(props.source?.sourcePath ?? '');
+const useCustomTarget = ref(!!props.source?.targetPath);
+const customTargetPath = ref(props.source?.targetPath ?? '');
 
 const resolvedTarget = computed(() => {
   return useCustomTarget.value && customTargetPath.value ? customTargetPath.value : props.defaultTarget;
@@ -39,7 +43,7 @@ function handleSubmit() {
       class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-lg w-[90%] flex flex-col gap-4"
       @submit.prevent="handleSubmit"
     >
-      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Add Source</h3>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ isEditMode ? 'Edit Source' : 'Add Source' }}</h3>
 
       <div class="flex flex-col gap-1.5">
         <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Source Name</label>
@@ -91,7 +95,7 @@ function handleSubmit() {
           class="px-4 py-2 text-sm font-medium text-white bg-emerald-500 rounded-md hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed"
           :disabled="isLoading || !name.trim() || !sourcePath.trim()"
         >
-          {{ isLoading ? 'Adding...' : 'Add Source' }}
+          {{ isLoading ? (isEditMode ? 'Saving...' : 'Adding...') : (isEditMode ? 'Save Changes' : 'Add Source') }}
         </button>
       </div>
     </form>
