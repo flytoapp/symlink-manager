@@ -14,8 +14,8 @@ A cross-platform desktop application for managing symbolic links across multiple
 
 ## Use Cases
 
-- Managing dotfiles across multiple machines
 - Selectively enabling game mods or plugins
+- Symlinking dotfiles from a repository to your home directory
 - Organizing shared configuration files
 - Any workflow requiring toggling symlinks on/off
 

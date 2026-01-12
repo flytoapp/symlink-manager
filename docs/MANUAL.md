@@ -293,12 +293,12 @@ Organize mods for games like X-Plane, Flight Simulator, or others that use folde
 
 ### Dotfiles Management
 
-Manage configuration files across multiple machines:
+Symlink configuration files from a dotfiles repository:
 
 1. Create a profile for your dotfiles
 2. Set the base path to your home directory or `~/.config`
-3. Add your dotfiles repository as a source
-4. Selectively enable configurations for each machine
+3. Add your dotfiles repository folder as a source
+4. Selectively enable the configurations you need
 
 ### Development Environment
 
