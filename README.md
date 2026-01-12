@@ -2,6 +2,8 @@
 
 A cross-platform desktop application for managing symbolic links across multiple directories. Built with Tauri, Vue 3, and Rust.
 
+**[User Manual](docs/MANUAL.md)** · **[Download](https://github.com/flytoapp/symlink-manager/releases)**
+
 ## Features
 
 - **Profile-based organization** - Group related symlink configurations into profiles
@@ -21,9 +23,13 @@ A cross-platform desktop application for managing symbolic links across multiple
 
 Download the latest release for your platform from the [Releases](https://github.com/flytoapp/symlink-manager/releases) page:
 
-- **Windows**: `.msi` or `.exe`
-- **macOS**: `.dmg`
-- **Linux**: `.deb` or `.AppImage`
+| Platform | File | Notes |
+|----------|------|-------|
+| **Windows** | `.msi` | Standard installer |
+| **macOS (Apple Silicon)** | `aarch64.dmg` | M1/M2/M3/M4 Macs |
+| **macOS (Intel)** | `x64.dmg` | Older Intel Macs |
+| **Linux (Debian/Ubuntu)** | `.deb` | `sudo dpkg -i <file>` |
+| **Linux (Other)** | `.AppImage` | Universal, run directly |
 
 ## Development
 

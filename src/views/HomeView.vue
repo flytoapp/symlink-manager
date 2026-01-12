@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { Settings, ExternalLink } from 'lucide-vue-next';
+import { Settings, ExternalLink, HelpCircle } from 'lucide-vue-next';
 import { revealItemInDir } from '@tauri-apps/plugin-opener';
 import { useAppStore } from '@/stores/appStore';
 import ProfileList from '@/components/profiles/ProfileList.vue';
@@ -10,6 +10,7 @@ import ItemList from '@/components/items/ItemList.vue';
 
 const emit = defineEmits<{
   openSettings: [];
+  openHelp: [];
 }>();
 
 const store = useAppStore();
@@ -69,7 +70,14 @@ function selectSource(sourceId: string) {
         />
       </div>
 
-      <div class="p-4 border-t border-gray-200 dark:border-gray-700 mt-auto">
+      <div class="p-4 border-t border-gray-200 dark:border-gray-700 mt-auto flex flex-col gap-1">
+        <button
+          class="flex items-center gap-2 px-3 py-2 w-full text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
+          @click="emit('openHelp')"
+        >
+          <HelpCircle :size="16" />
+          <span>Help</span>
+        </button>
         <button
           class="flex items-center gap-2 px-3 py-2 w-full text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md transition-colors"
           @click="emit('openSettings')"
