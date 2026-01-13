@@ -156,11 +156,23 @@ fn create_symlink(source: &Path, target: &Path) -> std::io::Result<()> {
 fn remove_symlink(path: &Path) -> std::io::Result<()> {
     #[cfg(windows)]
     {
-        let metadata = std::fs::symlink_metadata(path)?;
-        if metadata.is_dir() {
-            std::fs::remove_dir(path)
-        } else {
-            std::fs::remove_file(path)
+        // On Windows, directory symlinks must be removed with remove_dir,
+        // and file symlinks with remove_file. Using the wrong one gives
+        // "Access is denied" (error 5).
+        //
+        // Try remove_dir first (works for directory symlinks), then fall back
+        // to remove_file (for file symlinks). This is more reliable than
+        // checking metadata.is_dir() which can be inconsistent for symlinks.
+        match std::fs::remove_dir(path) {
+            Ok(()) => Ok(()),
+            Err(e) if e.raw_os_error() == Some(145) => {
+                // ERROR_DIR_NOT_EMPTY - shouldn't happen for symlinks, but just in case
+                Err(e)
+            }
+            Err(_) => {
+                // Try remove_file for file symlinks
+                std::fs::remove_file(path)
+            }
         }
     }
 
