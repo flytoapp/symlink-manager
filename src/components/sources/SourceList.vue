@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Trash2, Folder, ArrowRight } from 'lucide-vue-next';
+import { Trash2, Folder, ArrowRight, Pencil } from 'lucide-vue-next';
 import type { Source } from '@/types';
 import SourceForm from './SourceForm.vue';
 import ConfirmDialog from '@/components/common/ConfirmDialog.vue';
@@ -17,15 +17,27 @@ const emit = defineEmits<{
   select: [sourceId: string];
 }>();
 
-const { createSource, deleteSource, isCreating } = useSources();
+const { createSource, updateSource, deleteSource, isCreating, isUpdating } = useSources();
 
 const showCreateForm = ref(false);
+const sourceToEdit = ref<Source | null>(null);
 const sourceToDelete = ref<Source | null>(null);
 
 async function handleCreate(name: string, sourcePath: string, targetPath?: string) {
   const source = await createSource(props.profileId, name, sourcePath, targetPath);
   showCreateForm.value = false;
   emit('select', source.id);
+}
+
+async function handleEdit(name: string, sourcePath: string, targetPath?: string) {
+  if (!sourceToEdit.value) return;
+  await updateSource(props.profileId, {
+    ...sourceToEdit.value,
+    name,
+    sourcePath,
+    targetPath,
+  });
+  sourceToEdit.value = null;
 }
 
 async function handleDelete() {
@@ -77,13 +89,22 @@ function getResolvedTarget(source: Source): string {
             {{ getResolvedTarget(source) }}
           </span>
         </div>
-        <button
-          class="p-1 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
-          title="Delete source"
-          @click.stop="sourceToDelete = source"
-        >
-          <Trash2 :size="14" />
-        </button>
+        <div class="flex gap-0.5">
+          <button
+            class="p-1 text-gray-400 dark:text-gray-500 hover:text-blue-500 dark:hover:text-blue-400 rounded hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
+            title="Edit source"
+            @click.stop="sourceToEdit = source"
+          >
+            <Pencil :size="14" />
+          </button>
+          <button
+            class="p-1 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 rounded hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
+            title="Delete source"
+            @click.stop="sourceToDelete = source"
+          >
+            <Trash2 :size="14" />
+          </button>
+        </div>
       </div>
     </div>
 
@@ -93,6 +114,15 @@ function getResolvedTarget(source: Source): string {
       :default-target="profileBasePath"
       @submit="handleCreate"
       @cancel="showCreateForm = false"
+    />
+
+    <SourceForm
+      v-if="sourceToEdit"
+      :source="sourceToEdit"
+      :is-loading="isUpdating"
+      :default-target="profileBasePath"
+      @submit="handleEdit"
+      @cancel="sourceToEdit = null"
     />
 
     <ConfirmDialog

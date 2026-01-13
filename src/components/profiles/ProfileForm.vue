@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import PathInput from '@/components/common/PathInput.vue';
+import type { Profile } from '@/types';
 
-defineProps<{
+const props = defineProps<{
   isLoading?: boolean;
+  profile?: Profile;
 }>();
 
 const emit = defineEmits<{
@@ -11,8 +13,10 @@ const emit = defineEmits<{
   cancel: [];
 }>();
 
-const name = ref('');
-const basePath = ref('');
+const isEditMode = computed(() => !!props.profile);
+
+const name = ref(props.profile?.name ?? '');
+const basePath = ref(props.profile?.basePath ?? '');
 
 function handleSubmit() {
   if (name.value.trim() && basePath.value.trim()) {
@@ -30,7 +34,7 @@ function handleSubmit() {
       class="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-lg w-[90%] flex flex-col gap-4"
       @submit.prevent="handleSubmit"
     >
-      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">New Profile</h3>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ isEditMode ? 'Edit Profile' : 'New Profile' }}</h3>
 
       <div class="flex flex-col gap-1.5">
         <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Profile Name</label>
@@ -66,7 +70,7 @@ function handleSubmit() {
           class="px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
           :disabled="isLoading || !name.trim() || !basePath.trim()"
         >
-          {{ isLoading ? 'Creating...' : 'Create Profile' }}
+          {{ isLoading ? (isEditMode ? 'Saving...' : 'Creating...') : (isEditMode ? 'Save Changes' : 'Create Profile') }}
         </button>
       </div>
     </form>

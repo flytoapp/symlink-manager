@@ -3,10 +3,11 @@ import { onMounted, ref } from 'vue';
 import { useAppStore } from '@/stores/appStore';
 import HomeView from '@/views/HomeView.vue';
 import SettingsView from '@/views/SettingsView.vue';
+import HelpView from '@/views/HelpView.vue';
 import '@/composables/useTheme'; // Initialize theme on load
 
 const store = useAppStore();
-const currentView = ref<'home' | 'settings'>('home');
+const currentView = ref<'home' | 'settings' | 'help'>('home');
 
 onMounted(() => {
   store.initialize();
@@ -31,5 +32,7 @@ onMounted(() => {
 
   <SettingsView v-else-if="currentView === 'settings'" @back="currentView = 'home'" />
 
-  <HomeView v-else @open-settings="currentView = 'settings'" />
+  <HelpView v-else-if="currentView === 'help'" @back="currentView = 'home'" />
+
+  <HomeView v-else @open-settings="currentView = 'settings'" @open-help="currentView = 'help'" />
 </template>
