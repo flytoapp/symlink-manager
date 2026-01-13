@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install)",
+      "Bash(tree /F /L 3 \"C:\\\\Users\\\\alex\\\\Projects\\\\symlink-manager\\\\src\")",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:v2.tauri.app)",
+      "WebSearch"
+    ]
+  }
+}
