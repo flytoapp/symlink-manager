@@ -250,6 +250,19 @@ Choose your preferred appearance:
 - **Dark** - Dark background with light text
 - **System** - Automatically matches your operating system's theme
 
+### Updates
+
+The Updates section shows your current version and allows you to check for new releases.
+
+- **Current version** - Displays the installed version number
+- **Check for Updates** - Click to check if a newer version is available
+
+When an update is available:
+1. You'll see the new version number and release notes
+2. Click **Download and Install** to begin the update
+3. A progress bar shows the download status
+4. The app will automatically restart with the new version
+
 ---
 
 ## Platform-Specific Notes
