@@ -35,7 +35,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDQyMEI0OEI3MUNGODc4QUIKUldTcmVQZ2N0MGdMUW9ENmhSQjFGejhvcmdLVW1UUzZ2eDlMTUtYTG9YdHZFcW9kRHgyc1ovUC8K",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEYxOTZFRUE3NDIzM0I5RjMKUldUenVUTkNwKzZXOGJ5RE5HWjVmZVlJZTZJWFRoMHZ2U09lVXpnRHVYNWFmTFUvQjBGWWY4ZEMK",
       "endpoints": [
         "https://github.com/flytoapp/symlink-manager/releases/latest/download/latest.json"
       ],
