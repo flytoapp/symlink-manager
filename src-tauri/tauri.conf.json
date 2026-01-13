@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "Symlink Manager",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "identifier": "com.flyto.symlink-manager",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -23,7 +23,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["dmg", "msi", "deb", "appimage"],
+    "targets": ["dmg", "msi", "deb", "appimage", "nsis"],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -31,5 +31,16 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ]
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDQyMEI0OEI3MUNGODc4QUIKUldTcmVQZ2N0MGdMUW9ENmhSQjFGejhvcmdLVW1UUzZ2eDlMTUtYTG9YdHZFcW9kRHgyc1ovUC8K",
+      "endpoints": [
+        "https://github.com/flytoapp/symlink-manager/releases/latest/download/latest.json"
+      ],
+      "windows": {
+        "installMode": "passive"
+      }
+    }
   }
 }
